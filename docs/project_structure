@@ -1,0 +1,20 @@
+/formease
+    /backend
+        /src             # Go source code
+        /migrations      # Database migration files
+        /tests           # Backend tests
+        Dockerfile       # Dockerfile for the backend
+    /frontend
+        /src             # SvelteKit source code
+        /static          # Static assets
+        /tests           # Frontend tests
+        Dockerfile       # Dockerfile for the frontend
+    /docs               # Project documentation
+    /scripts            # Utility scripts
+    /deploy             # Deployment configurations
+        docker-compose.yml
+        .env.example
+    /.github
+        /workflows      # GitHub Actions CI/CD configurations
+    .gitignore
+    README.md

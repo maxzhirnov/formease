@@ -1,0 +1,42 @@
+# Frontend
+/frontend/src/node_modules
+/frontend/src/.svelte-kit
+/frontend/src/build
+/frontend/src/.env
+/frontend/src/.env.*
+!/frontend/src/.env.example
+/frontend/src/package-lock.json
+/frontend/src/.DS_Store
+
+# Backend
+/backend/src/tmp
+/backend/src/.env
+/backend/src/.env.*
+!/backend/src/.env.example
+/backend/src/*.exe
+/backend/src/*.exe~
+/backend/src/*.dll
+/backend/src/*.so
+/backend/src/*.dylib
+/backend/src/*.test
+/backend/src/vendor/
+
+# IDE
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build artifacts
+dist/
+build/
