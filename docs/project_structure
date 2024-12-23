@@ -1,7 +1,7 @@
 /formease
     /backend
         /src             # Go source code
-        /migrations      # Database migration files
+            /internal/database/migrations      # Database migration files
         /tests           # Backend tests
         Dockerfile       # Dockerfile for the backend
     /frontend

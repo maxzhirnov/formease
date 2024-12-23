@@ -1,0 +1,45 @@
+{
+	"name": "ui",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"devDependencies": {
+		"@auth/core": "^0.37.4",
+		"@auth/sveltekit": "^1.7.4",
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/kit": "^2.11.1",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"@tailwindcss/typography": "^0.5.14",
+		"@tsconfig/svelte": "^5.0.4",
+		"@types/jsonwebtoken": "^9.0.7",
+		"@types/node": "^22.10.2",
+		"autoprefixer": "^10.4.20",
+		"flowbite": "^2.5.2",
+		"flowbite-svelte": "^0.47.4",
+		"jsonwebtoken": "^9.0.2",
+		"postcss": "^8.4.49",
+		"svelte": "^5.14.0",
+		"svelte-check": "^4.0.0",
+		"svelte-preprocess": "^6.0.3",
+		"tailwindcss": "^3.4.17",
+		"typescript": "^5.7.2",
+		"typescript-svelte-plugin": "^0.3.44",
+		"vite": "^6.0.0"
+	},
+	"dependencies": {
+		"@rollup/wasm-node": "^4.28.1",
+		"flowbite-svelte-icons": "^2.0.2",
+		"html2pdf.js": "^0.10.2",
+		"i": "^0.3.7"
+	},
+	"overrides": {
+		"rollup": "npm:@rollup/wasm-node"
+	}
+}

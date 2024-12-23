@@ -1,0 +1,142 @@
+{
+    "name": "Travel Preferences Survey",
+    "theme": "nature",
+    "floatingShapesTheme": "summer",
+    "questions": [
+      {
+        "id": 1,
+        "type": "single-choice",
+        "question": "What type of vacation do you prefer?",
+        "subtext": "Let's start planning your perfect getaway!",
+        "image": "/img/beach-sunset.jpg",
+        "gradient": "from-blue-400 to-purple-500",
+        "bgColor": "#60A5FA",
+        "options": [
+          { "text": "Beach Relaxation", "icon": "🏖️", "color": "#38BDF8" },
+          { "text": "City Exploration", "icon": "🏙️", "color": "#818CF8" },
+          { "text": "Mountain Adventure", "icon": "🏔️", "color": "#34D399" }
+        ],
+        "nextQuestion": {
+          "conditions": [
+            { "answer": "Beach Relaxation", "nextId": 2 },
+            { "answer": "City Exploration", "nextId": 3 },
+            { "answer": "Mountain Adventure", "nextId": 4 }
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "type": "multiple-choice",
+        "question": "What beach activities interest you?",
+        "subtext": "Choose up to 3 activities",
+        "image": "/img/beach-activities.jpg",
+        "gradient": "from-cyan-500 to-blue-500",
+        "bgColor": "#0EA5E9",
+        "maxSelections": 3,
+        "options": [
+          { "text": "Sunbathing", "icon": "☀️", "color": "#FCD34D" },
+          { "text": "Snorkeling", "icon": "🤿", "color": "#38BDF8" },
+          { "text": "Beach Volleyball", "icon": "🏐", "color": "#F472B6" },
+          { "text": "Surfing", "icon": "🏄", "color": "#60A5FA" }
+        ],
+        "nextQuestion": {
+          "conditions": [],
+          "default": 5
+        }
+      },
+      {
+        "id": 3,
+        "type": "multiple-choice",
+        "question": "What city attractions do you enjoy?",
+        "subtext": "Select all that apply",
+        "image": "/img/city-skyline.jpg",
+        "gradient": "from-violet-500 to-fuchsia-500",
+        "bgColor": "#8B5CF6",
+        "options": [
+          { "text": "Museums", "icon": "🏛️", "color": "#A78BFA" },
+          { "text": "Fine Dining", "icon": "🍽️", "color": "#F472B6" },
+          { "text": "Shopping", "icon": "🛍️", "color": "#34D399" },
+          { "text": "Nightlife", "icon": "🌃", "color": "#818CF8" }
+        ],
+        "nextQuestion": {
+          "conditions": [],
+          "default": 5
+        }
+      },
+      {
+        "id": 4,
+        "type": "multiple-choice",
+        "question": "Which mountain activities excite you?",
+        "subtext": "Choose your adventures",
+        "image": "/img/mountain-view.jpg",
+        "gradient": "from-green-500 to-emerald-500",
+        "bgColor": "#10B981",
+        "options": [
+          { "text": "Hiking", "icon": "🥾", "color": "#34D399" },
+          { "text": "Skiing", "icon": "⛷️", "color": "#60A5FA" },
+          { "text": "Rock Climbing", "icon": "🧗", "color": "#F472B6" },
+          { "text": "Scenic Drives", "icon": "🚗", "color": "#FCD34D" }
+        ],
+        "nextQuestion": {
+          "conditions": [],
+          "default": 5
+        }
+      },
+      {
+        "id": 5,
+        "type": "input",
+        "question": "What's your dream destination?",
+        "subtext": "Tell us where you've always wanted to go",
+        "image": "/img/world-map.jpg",
+        "gradient": "from-yellow-400 to-orange-500",
+        "bgColor": "#FBBF24",
+        "inputType": "text",
+        "placeholder": "Enter destination",
+        "validation": "text",
+        "nextQuestion": {
+          "conditions": [],
+          "default": 6
+        }
+      },
+      {
+        "id": 6,
+        "type": "input",
+        "question": "What's your email address?",
+        "subtext": "We'll send you personalized travel recommendations",
+        "image": "/img/email-travel.jpg",
+        "gradient": "from-pink-500 to-rose-500",
+        "bgColor": "#EC4899",
+        "inputType": "email",
+        "placeholder": "your@email.com",
+        "validation": "email",
+        "nextQuestion": {
+          "conditions": [],
+          "default": 7
+        }
+      },
+      {
+        "id": 7,
+        "type": "single-choice",
+        "question": "Would you like to receive our travel newsletter?",
+        "subtext": "Get weekly travel tips and exclusive offers",
+        "image": "/img/travel-newsletter.jpg",
+        "gradient": "from-indigo-500 to-purple-500",
+        "bgColor": "#6366F1",
+        "options": [
+          { "text": "Yes, sign me up!", "icon": "✈️", "color": "#818CF8" },
+          { "text": "No, thanks", "icon": "🏠", "color": "#F472B6" }
+        ]
+      }
+    ],
+    "thankYouMessage": {
+      "title": "Thank you for your responses!",
+      "subtitle": "We're excited to help plan your next adventure.",
+      "icon": "🌎",
+      "button": {
+        "text": "Explore Travel Packages",
+        "url": "https://traveladventures.com/packages",
+        "newTab": true
+      }
+    }
+  }
+  

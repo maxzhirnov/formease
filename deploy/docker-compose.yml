@@ -1,0 +1,50 @@
+# /deploy/docker-compose.yml
+version: '3.8'
+
+services:
+  mongodb:
+      image: mongo:latest
+      container_name: formease-mongodb-dev
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+        MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+        MONGO_INITDB_DATABASE: ${MONGO_DB}
+      volumes:
+        - mongodb_data:/data/db
+      ports:
+        - "27017:27017"
+        
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: formease-backend
+    environment:
+      MONGODB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DB}?authSource=admin
+      PORT: 8000
+      GIN_MODE: release
+    depends_on:
+      - mongodb
+    ports:
+      - "8080:8080"
+
+  frontend:
+      build:
+        context: ../frontend
+        dockerfile: Dockerfile
+        target: builder
+      container_name: formease-frontend-dev
+      environment:
+        PUBLIC_API_URL: http://localhost:8080
+        NODE_ENV: development
+      volumes:
+        - ../frontend:/app
+        - /app/node_modules
+      command: npm run dev -- --host
+      ports:
+        - "3000:5170"
+      depends_on:
+        - backend
+
+volumes:
+  mongodb_data:

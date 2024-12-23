@@ -1,0 +1,112 @@
+{
+    "name": "Sample Form",
+    "theme": "tech",
+    "floatingShapesTheme": "spring",
+    "questions": [
+      {
+        "id": 1,
+        "type": "single-choice",
+        "question": "What brings you here today?",
+        "subtext": "Help us personalize your experience",
+        "image": "/img/demo.jpg",
+        "options": [
+          { "text": "Building a Website", "icon": "🎨" },
+          { "text": "Mobile App", "icon": "📱" },
+          { "text": "Just Exploring", "icon": "🔍" }
+        ],
+        "nextQuestion": {
+          "conditions": [
+            { "answer": "Building a Website", "nextId": 2 },
+            { "answer": "Mobile App", "nextId": 3 },
+            { "answer": "Just Exploring", "nextId": 4 }
+          ]
+        }
+      },
+      {
+          "id": 2,
+          "type": "multiple-choice",
+          "question": "What features do you need?",
+          "subtext": "Select up to 4 key features",
+          "image": "/img/demo.jpg",
+          "maxSelections": 4,
+          "options": [
+            { "text": "E-commerce", "icon": "🛍️" },
+            { "text": "Blog", "icon": "✍️" },
+            { "text": "Authentication", "icon": "🔒" },
+            { "text": "Analytics", "icon": "📊" },
+            { "text": "SEO Tools", "icon": "🎯" }
+          ],
+          "nextQuestion": {
+            "conditions": [],
+            "default": 5
+          }
+        },
+        {
+          "id": 3,
+          "type": "multiple-choice",
+          "question": "Which platforms are you targeting?",
+          "subtext": "Select all that apply",
+          "image": "/img/demo.jpg",
+          "maxSelections": 3,
+          "options": [
+            { "text": "iOS", "icon": "🍎" },
+            { "text": "Android", "icon": "🤖" },
+            { "text": "Both", "icon": "📱" }
+          ],
+          "nextQuestion": {
+            "conditions": [],
+            "default": 5
+          }
+        },
+        {
+          "id": 4,
+          "type": "input",
+          "question": "What's your main interest?",
+          "subtext": "Tell us what you'd like to learn more about",
+          "image": "/img/demo.jpg",
+          "inputType": "text",
+          "placeholder": "Enter your interest",
+          "validation": "/.+/",
+          "nextQuestion": {
+            "conditions": [],
+            "default": 5
+          }
+        },
+        {
+          "id": 5,
+          "type": "input",
+          "question": "What's your email?",
+          "subtext": "We'll send you personalized recommendations",
+          "image": "/img/demo.jpg",
+          "inputType": "email",
+          "placeholder": "your@email.com",
+          "validation": "/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/",
+          "nextQuestion": {
+            "conditions": [],
+            "default": 6
+          }
+        },
+        {
+          "id": 6,
+          "type": "single-choice",
+          "question": "Would you like to receive our newsletter?",
+          "subtext": "Get weekly updates and tips",
+          "image": "/img/demo.jpg",
+          "options": [
+            { "text": "Yes, please!", "icon": "✨" },
+            { "text": "Maybe later", "icon": "⏰" }
+          ]
+        }
+    ],
+    "thankYouMessage": {
+      "title": "Спасибо вам огромное!",
+      "subtitle": "За то что прошли нашу форму!.",
+      "icon": "✨",
+      "button": {
+        "text": "Перейти",
+        "url": "https://hemaks.org",
+        "newTab": true
+      }
+    }
+  }
+  

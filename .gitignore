@@ -1,25 +1,25 @@
 # Frontend
-/frontend/src/node_modules
-/frontend/src/.svelte-kit
-/frontend/src/build
-/frontend/src/.env
-/frontend/src/.env.*
-!/frontend/src/.env.example
-/frontend/src/package-lock.json
-/frontend/src/.DS_Store
+/frontend/node_modules
+/frontend/.svelte-kit
+/frontend/build
+/frontend/.env
+/frontend/.env.*
+!/frontend/.env.example
+/frontend/package-lock.json
+/frontend/.DS_Store
 
 # Backend
-/backend/src/tmp
-/backend/src/.env
-/backend/src/.env.*
-!/backend/src/.env.example
-/backend/src/*.exe
-/backend/src/*.exe~
-/backend/src/*.dll
-/backend/src/*.so
-/backend/src/*.dylib
-/backend/src/*.test
-/backend/src/vendor/
+/backend/tmp
+/backend/.env
+/backend/.env.*
+!/backend/.env.example
+/backend/*.exe
+/backend/*.exe~
+/backend/*.dll
+/backend/*.so
+/backend/*.dylib
+/backend/*.test
+/backend/vendor/
 
 # IDE
 .idea/
@@ -40,3 +40,6 @@ npm-debug.log*
 # Build artifacts
 dist/
 build/
+
+# Env files
+.env
