@@ -1,5 +1,5 @@
 # /Makefile
-.PHONY: up down build logs clean dev
+.PHONY: up down build logs clean dev run-mongo
 
 # Production commands
 up:
@@ -42,3 +42,6 @@ test-backend:
 
 test-frontend:
 	cd frontend && npm test
+
+run-mongo:
+	podman-compose -f deploy/docker-compose.mongo.yml up --build

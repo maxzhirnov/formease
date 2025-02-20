@@ -5,6 +5,7 @@ import (
 
 	"github.com/maxzhirnov/formease/internal/models"
 	"github.com/maxzhirnov/formease/internal/repository"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type FormService struct {
@@ -95,4 +96,18 @@ func (s *FormService) validateQuestion(question models.Question, index int) erro
 	}
 
 	return nil
+}
+
+func (s *FormService) ToggleDraftStatus(formID string, userID string) error {
+	objectID, err := primitive.ObjectIDFromHex(formID)
+	if err != nil {
+		return fmt.Errorf("invalid form ID: %w", err)
+	}
+
+	userObjectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return fmt.Errorf("invalid user ID: %w", err)
+	}
+
+	return s.formRepo.ToggleDraftStatus(objectID, userObjectID)
 }

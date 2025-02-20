@@ -1,9 +1,8 @@
 <script lang="ts">
   import { Label, Input, Helper, Button } from 'flowbite-svelte';
 
-  import { fade } from 'svelte/transition';
-  import type { InputQuestion, Question } from '$lib/types';
   import { validate, type ValidatorName } from '$lib/validators/formValidators';
+    import type { InputQuestion, Question } from '$lib/types/questions';
   
   export let question: InputQuestion;
   export let onAnswer: (value: string) => void;
@@ -16,7 +15,8 @@
 
   function validateInput(value: string) {
     if (question.validation) {
-      isValid = validate(value, question.validation as ValidatorName);
+      console.log('validateInput', value, question);
+      isValid = validate(value, question.validation);
       errorMessage = isValid ? '' : `Please enter a valid ${question.inputType}`;
     } else {
       isValid = value.length > 0;

@@ -1,11 +1,7 @@
 <script lang="ts">
-    import FormManage from '$lib/components/FormManage/FormManage.svelte';
-    import UserGreeting from '$lib/components/UserGreeting.svelte';
-    import Statistics from '$lib/components/Statistics.svelte';
+    import FormsList from "$lib/components/FormManage/FormsList.svelte";
 </script>
 
-<div class="bg-white min-h-screen py-12 m-6 rounded-2xl px-4">
-    <UserGreeting />
-    <Statistics />
-    <FormManage />   
+<div class="bg-white min-h-screen py-6 md:py-8 m-2 md:m-6 rounded-2xl px-0 ">
+    <FormsList/>
 </div>

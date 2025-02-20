@@ -14,23 +14,35 @@ type Form struct {
 }
 
 type Question struct {
-	ID            int          `bson:"id" json:"id"`
-	Type          string       `bson:"type" json:"type"`
-	Question      string       `bson:"question" json:"question"`
-	Subtext       string       `bson:"subtext" json:"subtext"`
-	Image         string       `bson:"image" json:"image"`
-	InputType     string       `bson:"inputType,omitempty" json:"inputType,omitempty"`
-	Placeholder   string       `bson:"placeholder,omitempty" json:"placeholder,omitempty"`
-	Validation    string       `bson:"validation,omitempty" json:"validation,omitempty"`
-	MaxSelections int          `bson:"maxSelections,omitempty" json:"maxSelections,omitempty"`
-	Options       []Option     `bson:"options,omitempty" json:"options,omitempty"`
-	NextQuestion  NextQuestion `bson:"nextQuestion" json:"nextQuestion"`
+	ID       int    `bson:"id" json:"id"`
+	Type     string `bson:"type" json:"type"`
+	Question string `bson:"question" json:"question"`
+	Subtext  string `bson:"subtext" json:"subtext"`
+	Image    string `bson:"image" json:"image"`
+	// Input question fields
+	InputType   string `bson:"inputType,omitempty" json:"inputType,omitempty"`
+	Placeholder string `bson:"placeholder,omitempty" json:"placeholder,omitempty"`
+	Validation  string `bson:"validation,omitempty" json:"validation,omitempty"`
+	// Choice question fields
+	MaxSelections int      `bson:"maxSelections,omitempty" json:"maxSelections,omitempty"`
+	Options       []Option `bson:"options,omitempty" json:"options,omitempty"`
+	// Rating question fields
+	MinValue   int     `bson:"minValue,omitempty" json:"minValue,omitempty"`
+	MaxValue   int     `bson:"maxValue,omitempty" json:"maxValue,omitempty"`
+	Step       float64 `bson:"step,omitempty" json:"step,omitempty"`
+	ShowLabels bool    `bson:"showLabels,omitempty" json:"showLabels,omitempty"`
+	MinLabel   string  `bson:"minLabel,omitempty" json:"minLabel,omitempty"`
+	MaxLabel   string  `bson:"maxLabel,omitempty" json:"maxLabel,omitempty"`
+	Icon       string  `bson:"icon,omitempty" json:"icon,omitempty"`
+	// Common fields
+	NextQuestion NextQuestion `bson:"nextQuestion" json:"nextQuestion"`
 }
 
 type Option struct {
+	ID    int    `bson:"id" json:"id"`
 	Text  string `bson:"text" json:"text"`
 	Icon  string `bson:"icon" json:"icon"`
-	Color string `bson:"color" json:"color"`
+	Image string `bson:"image" json:"image"`
 }
 
 type NextQuestion struct {
@@ -53,5 +65,5 @@ type ThankYouMessage struct {
 type ButtonConfig struct {
 	Text   string `bson:"text" json:"text"`
 	URL    string `bson:"url" json:"url"`
-	NewTab bool   `bson:"new_tab" json:"new_tab"`
+	NewTab bool   `bson:"newTab" json:"newTab"`
 }

@@ -1,12 +1,13 @@
 <script lang="ts">
-    import { themes, type FloatingShapesTheme, type Shape } from '$lib/types';
+    import { floatingShapesThemes, type FloatingShapesTheme, type Shape } from "$lib/types/shapes";
+
   
     export let theme: FloatingShapesTheme = 'default';
     export let customShapes: Shape[] | undefined = undefined;
     export let blendMode = "screen";
     export let zIndex = -1;
   
-    $: shapes = customShapes || themes[theme];
+    $: shapes = customShapes || floatingShapesThemes[theme];
   </script>
   
   <style>

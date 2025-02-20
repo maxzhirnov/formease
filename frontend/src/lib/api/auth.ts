@@ -1,7 +1,6 @@
 // api/auth.ts
 import { PUBLIC_API_URL } from '$env/static/public';
 import type { LoginRequest, LoginResponse } from '$lib/types/auth';
-import { redirect } from '@sveltejs/kit';
 
 export async function register(email: string, password: string) {
     console.log(PUBLIC_API_URL)

@@ -1,8 +1,8 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import type { ThankYouMessage } from "$lib/types";
     import { fade, fly, slide } from "svelte/transition";
     import { Button } from 'flowbite-svelte';
+    import type { ThankYouMessage } from "$lib/types/thank";
 
     export let thankYouMessage : ThankYouMessage;
 

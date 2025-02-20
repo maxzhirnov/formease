@@ -1,7 +1,7 @@
 <script>
-    import Nav from '$lib/components/Nav.svelte';
+    import Header from '$lib/components/Header/Header.svelte';
 </script>
 
-<Nav />
+<Header />
 <slot />
   

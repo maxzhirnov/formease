@@ -1,21 +1,23 @@
 
 <script lang="ts">
+    import type { Question } from '$lib/types/questions';
+    import { type FloatingShapesTheme } from '$lib/types/shapes';
+    import type { ThankYouMessage } from '$lib/types/thank';
+    import { predefinedThemes, type Theme, type ThemeName } from '$lib/types/theme';
+
     import ProgressBar from '$lib/components/FormShow/ProgressBar.svelte';
     import QuestionContainer from '$lib/components/FormShow/QuestionContainer.svelte';
     import FloatingShapes from './FloatingShapes.svelte';
     import ThankYou from './ThankYou.svelte';
-    
-    import { predefinedThemes, type ThemeName } from '$lib/types';
-    import type { Question, ThankYouMessage, Theme } from '$lib/types';
-    import type { FloatingShapesTheme } from '$lib/types';
-    
+    import { PUBLIC_API_URL } from '$env/static/public';
+
+    export let onSubmit: () => void = () => {};
     export let questions : Question[];
     export let thankYouMessage : ThankYouMessage
     export let theme: ThemeName | Theme = 'dark';
     export let floatingShapesTheme : FloatingShapesTheme;
 
     $: activeTheme = typeof theme === 'string' ? predefinedThemes[theme] : theme;
-    
     let isFormSubmitted = false;
     let currentQuestion = 0;
     let answers: Array<string | string[]> = [];
@@ -60,12 +62,28 @@
     };
 
     const handleSubmit = async () => {
+
+        const response = await fetch(PUBLIC_API_URL + '/submissions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                answers: answers.join(', ')
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Failed to submit form');
+        }
+        
         console.log('Form Answers:', answers);
         isFormSubmitted = true;
+        onSubmit(); 
         // submit logic here
     };
-
-  </script>
+</script>
   
   <div 
     class="min-h-screen flex justify-center items-center font-sans" 
@@ -89,6 +107,7 @@
         <ProgressBar 
             currentQuestion={Math.min(currentQuestion, questions.length - 1)}
             totalQuestions={questions.length}
+            color={activeTheme.accentColor}
         />
 
         {#key currentQuestion}

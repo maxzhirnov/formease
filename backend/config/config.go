@@ -25,7 +25,7 @@ func Load() (*Config, error) {
 	if mongoURI == "" {
 		user := getEnvOrDefault("MONGO_USER", "")
 		pass := getEnvOrDefault("MONGO_PASSWORD", "")
-		host := getEnvOrDefault("MONGO_HOST", "mongodb")
+		host := getEnvOrDefault("MONGO_HOST", "localhost")
 		port := getEnvOrDefault("MONGO_PORT", "27017")
 		db := getEnvOrDefault("MONGO_DB", "formease")
 

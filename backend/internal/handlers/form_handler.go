@@ -81,6 +81,7 @@ func (h *FormHandler) GetForm(c *gin.Context) {
 }
 
 func (h *FormHandler) ListForms(c *gin.Context) {
+	logger.Info("Listing forms")
 	userID, ok := c.Get("userID")
 	if !ok {
 		logger.Error("User ID not found in context")
@@ -106,17 +107,6 @@ func (h *FormHandler) ListForms(c *gin.Context) {
 	logger.Info("Forms listed successfully", zap.Int("count", len(forms)))
 	c.JSON(http.StatusOK, forms)
 }
-
-// type CustomForm struct {
-// 	ID              primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-// 	UserID          string             `bson:"user_id" json:"user_id" binding:"required"`
-// 	IsDraft         bool               `bson:"is_draft" json:"is_draft"`
-// 	Name            string             `bson:"name" json:"name"`
-// 	Theme           string             `bson:"theme" json:"theme"`
-// 	FloatingShapes  string             `bson:"floatingShapesTheme" json:"floatingShapesTheme"`
-// 	Questions       []Question         `bson:"questions" json:"questions"`
-// 	ThankYouMessage ThankYouMessage    `bson:"thankYouMessage" json:"thankYouMessage"`
-// }
 
 func (h *FormHandler) UpdateForm(c *gin.Context) {
 	id := c.Param("id")
@@ -174,4 +164,25 @@ func (h *FormHandler) DeleteForm(c *gin.Context) {
 
 	logger.Info("Form deleted successfully", zap.String("formId", id))
 	c.JSON(http.StatusOK, gin.H{"message": "Form deleted successfully"})
+}
+
+func (h *FormHandler) ToggleDraftStatus(c *gin.Context) {
+	id := c.Param("id")
+	logger.Info("Toggle draft status", zap.String("formId", id))
+
+	userID, ok := c.Get("userID")
+	if !ok {
+		logger.Error("User ID not found in context")
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	if err := h.formService.ToggleDraftStatus(id, userID.(string)); err != nil {
+		logger.Error("Failed to toggle draft status", zap.Error(err))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	logger.Info("Draft status toggled successfully", zap.String("formId", id))
+	c.JSON(http.StatusOK, gin.H{"message": "Draft status updated successfully"})
 }

@@ -1,4 +1,4 @@
-import type { FormData } from '$lib/types';
+import type { FormData } from '$lib/types/form';
 import { PUBLIC_API_URL } from '$env/static/public';
 
 const fetchWithCreds = (url: string, options: RequestInit = {}, customFetch: typeof fetch = fetch) => {
@@ -27,27 +27,20 @@ export async function createForm(formData: FormData): Promise<FormData> {
 }
 
 export async function listForms() {
-    console.log('[listForms] Starting to fetch forms...');
-
     try {
         const response = await fetchWithCreds(`${PUBLIC_API_URL}/my-forms`);
-        console.log(`[listForms] Fetch request completed with status: ${response.status}`);
 
         if (!response.ok) {
             const error = await response.json();
-            console.error('[listForms] Error fetching forms:', error);
             throw new Error(error.error || 'Failed to fetch forms');
         }
 
         const forms = await response.json();
-        console.log(`[listForms] Received forms: ${forms}`);
         return forms;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('[listForms] An error occurred:', error.message);
             throw error;
         } else {
-            console.error('[listForms] An unexpected error occurred:', error);
             throw new Error('An unknown error occurred');
         }
     }
@@ -80,7 +73,6 @@ export async function getFormPublic(id: string, customFetch: typeof fetch = fetc
 }
 
 export async function updateForm(id: string, formData: FormData) {
-    console.log('Sending form data to server:', formData);
     const response = await fetchWithCreds(`${PUBLIC_API_URL}/my-forms/${id}`, {
         method: 'PUT',
         body: JSON.stringify(formData)
@@ -107,21 +99,96 @@ export async function deleteForm(id: string) {
     return response.json();
 }
 
-export async function generateFormWithAI(description: string): Promise<FormData> {
-    try {
-        const response = await fetchWithCreds(`${PUBLIC_API_URL}/my-forms/generate-ai`, {
+export interface AIFormRequest {
+    topic: string;
+    formType: string;
+    numQuestions: number;
+    preferences?: string[];
+}
+
+export async function generateFormWithAI(aiRequest: AIFormRequest): Promise<FormData> {
+        const response = await fetchWithCreds(`${PUBLIC_API_URL}/my-forms/generate-form`, {
             method: 'POST',
-            body: JSON.stringify({ description })
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(aiRequest)
+        });
+    
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Failed to generate AI form');
+        }
+    
+        return await response.json();
+}
+
+export async function toggleDraft(id: string, formData: FormData) {
+    const response = await fetchWithCreds(`${PUBLIC_API_URL}/my-forms/${id}/toggle-draft`, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to update form');
+    }
+
+    return response.json();
+}
+
+export async function uploadImage(file: File): Promise<string> {
+    const formData = new FormData();
+        formData.append('image', file);
+        
+        const response = await fetch(`${PUBLIC_API_URL}/image-upload`, {
+            method: 'POST',
+            body: formData,
+            credentials: 'include'
         });
 
+        
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to generate form');
+            throw new Error('Upload failed');
         }
 
-        return await response.json();
-    } catch (error) {
-        console.error('AI Form Generation Error:', error);
-        throw error;
+        const  resp  = await response.json();
+
+        return resp.url;
+}
+
+export interface ImageResponse {
+    images: ImageData[];
+    total: number;
+    page: number;
+    limit: number;
+}
+
+export async function getImages(page: number, limit: number): Promise<ImageResponse> {
+    const response = await fetch(`${PUBLIC_API_URL}/images?page=${page}&limit=${limit}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+    
+    if (!response.ok) {
+        throw new Error('Failed to fetch images');
+    }
+
+    return await response.json();
+}
+
+export async function deleteImage(imageId: string): Promise<void> {
+    const response = await fetch(`${PUBLIC_API_URL}/images/${imageId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete image');
     }
 }

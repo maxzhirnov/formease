@@ -6,6 +6,8 @@
     let { children }: {children: Snippet} = $props()
 </script>
 
-<ErrorDisplay/>
-{@render children()}
+<main class="max-w-7xl mx-auto">
+    <ErrorDisplay/>
+    {@render children()}
+</main>
 

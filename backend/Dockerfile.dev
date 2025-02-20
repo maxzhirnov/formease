@@ -2,30 +2,13 @@ FROM golang:1.23-alpine
 
 WORKDIR /app
 
-# Install necessary tools
-RUN apk add --no-cache \
-    curl \
-    gcc \
-    musl-dev
+# Установка Air
+RUN go install github.com/air-verse/air@latest
 
-# Install Air with specific version
-RUN go install github.com/cosmtrek/air@latest
-
-# Copy go.mod and go.sum first for better caching
-COPY go.mod go.sum ./
-RUN go mod download
-
-# Copy Air config
+# Копирование конфигурации Air
 COPY .air.toml ./
 
-# Set environment variables
+# Запуск через Air с включенным polling
 ENV AIR_FORCE_POLL=true
-ENV GO111MODULE=on
-ENV GOOS=linux
-ENV CGO_ENABLED=0
 
-# Add execute permissions to the tmp directory
-RUN mkdir -p tmp && chmod 777 tmp
-
-# Use shell form to ensure proper signal handling
-CMD air -c .air.toml
+CMD ["air", "-c", ".air.toml"]

@@ -2,37 +2,28 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
-    import { formStore } from '$lib/stores/formStore';
-    import { getForm } from '$lib/api/forms';
     import FormEditor from '$lib/components/FormManage/EditorForm.svelte';
+    import { formService } from '$lib/services/formService';
+    import { showError } from '$lib/utils/errorHandler';
+    import { Spinner } from 'flowbite-svelte';
 
     let loading = true;
     let error: string | null = null;
 
     onMount(async () => {
         try {
-            const form = await getForm($page.params.id, {}, fetch);
-            formStore.set(form);
-        } catch (e: unknown) {
-            // Type guard for Error objects
-            if (e instanceof Error) {
-                error = e.message;
-            } else {
-                error = 'An unknown error occurred';
-            }
-        } finally {
-            loading = false;
+            let form = await formService.api.fetch($page.params.id)
+            formService.state.setForm(form)
+        } catch (e) {
+            showError(e)
         }
+        loading = false;
     });
 </script>
-
+    
 {#if loading}
-    <div>Loading...</div>
-{:else if error}
-    <div>Error: {error}</div>
+    <Spinner/>
+    <p>Loading...</p>
 {:else}
-    <!-- <pre>
-        {JSON.stringify($formStore, null, 2)}
-    </pre> -->
-    <FormEditor />
+    <FormEditor />  
 {/if}

@@ -79,23 +79,31 @@ func (s *UserService) ValidateToken(tokenString string) (string, string, error) 
 func (s *UserService) RefreshToken(ctx context.Context, refreshToken string) (string, string, error) {
 	user, err := s.userRepo.FindByRefreshToken(ctx, refreshToken)
 	if err != nil {
+		logger.Error("Error finding user by refresh token", zap.Error(err))
 		return "", "", err
 	}
+	logger.Info("Refresh token found", zap.String("refreshToken", refreshToken))
 
 	accessToken, err := s.jwtUtil.GenerateToken(user.ID.Hex(), user.Email, s.config.TokenExpirationHours)
 	if err != nil {
+		logger.Error("Error generating access token", zap.Error(err))
 		return "", "", err
 	}
+	logger.Info("Access token generated", zap.String("accessToken", accessToken))
 
 	newRefreshToken, err := s.jwtUtil.GenerateRefreshToken(user.ID.Hex())
 	if err != nil {
+		logger.Error("Error generating new refresh token", zap.Error(err))
 		return "", "", err
 	}
+	logger.Info("New refresh token generated", zap.String("refreshToken", newRefreshToken))
 
 	// Update the stored refresh token in the database
 	if err := s.userRepo.UpdateRefreshToken(ctx, user.ID, newRefreshToken); err != nil {
+		logger.Error("Error updating refresh token", zap.Error(err))
 		return "", "", err
 	}
+	logger.Info("Refresh token updated", zap.String("refreshToken", newRefreshToken))
 
 	return accessToken, newRefreshToken, nil
 }

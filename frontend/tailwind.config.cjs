@@ -19,6 +19,10 @@ export default {
           800: '#CC4522',
           900: '#A5371B'
         }
+      },
+      fontFamily: {
+        'oswald': ['Oswald', 'sans-serif'],
+        'philosopher': ['Philosopher', 'sans-serif'],
       }
     }
   },

@@ -1,7 +1,7 @@
 // src/lib/factories/QuestionFactory.ts
 
-import type { SingleChoiceQuestion, MultipleChoiceQuestion, InputQuestion, Question } from '$lib/types';
-import { QuestionType } from '$lib/types';
+import  { type InputQuestion, type MultipleChoiceQuestion, type Question, QuestionType, type SingleChoiceQuestion } from "$lib/types/questions";
+
 
 // Function to create a new question based on type
 export function createQuestion(id: number, type: QuestionType): Question {
@@ -43,6 +43,23 @@ export function createQuestion(id: number, type: QuestionType): Question {
                 validation: undefined,
                 nextQuestion: { conditions: [], default: undefined }
             } as InputQuestion;
+
+        case QuestionType.RATING:
+            return {
+                id: newQuestionId,
+                question: '',
+                subtext: '',
+                image: '',
+                type: QuestionType.RATING,
+                minValue: 1,
+                maxValue: 5,
+                step: 1,
+                showLabels: true,
+                minLabel: "Poor",
+                maxLabel: "Excellent",
+                icon: "⭐️",
+                nextQuestion: { conditions: [], default: undefined }
+            };
 
         default:
             throw new Error('Invalid question type');

@@ -90,7 +90,12 @@ func (r *MongoUserRepository) EnsureIndexes(ctx context.Context) error {
 }
 
 func (r *MongoUserRepository) UpdateRefreshToken(ctx context.Context, userID primitive.ObjectID, refreshToken string) error {
-	_, err := r.collection.UpdateOne(ctx, bson.M{"_id": userID}, bson.M{"$set": bson.M{"refresh_token": refreshToken}})
+	logger.Info("Updating refresh token", zap.String("refreshToken", refreshToken))
+	res, err := r.collection.UpdateOne(ctx, bson.M{"_id": userID}, bson.M{"$set": bson.M{"refresh_token": refreshToken}})
+	logger.Info("Refresh token updated", zap.Int64("affectedDocuments", res.ModifiedCount))
+	if err != nil {
+		logger.Error("Error updating refresh token", zap.Error(err))
+	}
 	return err
 }
 

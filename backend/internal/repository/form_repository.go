@@ -60,7 +60,7 @@ func (r *FormRepository) ListForms(userID string) ([]models.Form, error) {
 	}
 
 	// Add filter for userID
-	filter := bson.M{"user_id": objectID}
+	filter := bson.M{"userId": objectID}
 
 	cursor, err := r.collection.Find(ctx, filter)
 	if err != nil {
@@ -99,5 +99,35 @@ func (r *FormRepository) DeleteForm(id string) error {
 	if result.DeletedCount == 0 {
 		return errors.New("form not found")
 	}
+	return nil
+}
+
+func (r *FormRepository) ToggleDraftStatus(formID primitive.ObjectID, userID primitive.ObjectID) error {
+	filter := bson.M{
+		"_id":    formID,
+		"userId": userID,
+	}
+
+	var currentForm models.Form
+	err := r.collection.FindOne(context.Background(), filter).Decode(&currentForm)
+	if err != nil {
+		return fmt.Errorf("form not found: %w", err)
+	}
+
+	update := bson.M{
+		"$set": bson.M{
+			"isDraft": !currentForm.IsDraft,
+		},
+	}
+
+	result, err := r.collection.UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		return fmt.Errorf("failed to update draft status: %w", err)
+	}
+
+	if result.ModifiedCount == 0 {
+		return fmt.Errorf("form not found or not modified")
+	}
+
 	return nil
 }

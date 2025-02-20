@@ -1,7 +1,5 @@
 <script lang="ts">
-    import type { SingleChoiceQuestion } from '$lib/types';
-    import { cubicOut } from 'svelte/easing';
-    import { fly } from 'svelte/transition';
+    import type { SingleChoiceQuestion } from '$lib/types/questions';
     import { Button } from 'flowbite-svelte';
     
     export let question: SingleChoiceQuestion;
@@ -14,6 +12,7 @@
         <Button 
             class="w-full justify-start gap-4 
                    bg-white/10 
+                   text-inherit
                    hover:bg-white/20 
                    hover:scale-[1.02] 
                    border 

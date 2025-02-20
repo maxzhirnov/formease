@@ -38,10 +38,8 @@ services:
       TOKEN_EXPIRATION_HOURS: ${TOKEN_EXPIRATION_HOURS}
       AUTH_SECRET: ${AUTH_SECRET}
       ENV: ${ENV}
-      AIR_FORCE_POLL: true
     volumes:
-      - ../backend:/app:z
-      - backend_tmp:/app/tmp
+      - ../backend:/app 
     ports:
       - "8080:${BACKEND_PORT}"
     depends_on:
@@ -78,4 +76,3 @@ services:
 
 volumes:
   mongodb_data:
-  backend_tmp:

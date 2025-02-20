@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { errorStore } from '$lib/stores/errorStore';
+    import { errorStore } from '$lib/state/errorStore';
     import { onDestroy } from 'svelte';
     import { Toast } from 'flowbite-svelte';
     import { slide } from 'svelte/transition';

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { MultipleChoiceQuestion, Question } from '$lib/types';
+    import type { MultipleChoiceQuestion, Question } from '$lib/types/questions';
     import { Button } from 'flowbite-svelte';
     
     export let question: MultipleChoiceQuestion;
@@ -26,11 +26,12 @@
             disabled={!canSelect(option.text)}
             class="w-full justify-start gap-4 
                    {answers.includes(option.text) 
-                     ? 'bg-blue-500/30 text-white-500 border-blue-500/40 scale-[1.02]' 
+                     ? 'bg-blue-500/30 border-blue-500/40 scale-[1.02]' 
                      : 'bg-white/10 hover:bg-white/20 border-white/10'}
                    {!canSelect(option.text) ? 'opacity-50 cursor-not-allowed' : ''}
                    hover:scale-[1.02] 
                    border 
+                   text-inherit
                    shadow-md 
                    transition-all 
                    duration-300 

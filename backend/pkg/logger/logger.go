@@ -10,15 +10,25 @@ var log *zap.Logger
 func init() {
 	config := zap.NewProductionConfig()
 
-	// Use ISO8601 time format for better readability
-	config.EncoderConfig.TimeKey = "timestamp"
-	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-	config.EncoderConfig.CallerKey = "caller"
-	config.EncoderConfig.MessageKey = "msg"
-	config.EncoderConfig.LevelKey = "level"
+	// Change encoder to console instead of json
+	config.Encoding = "console"
+
+	// Configure console encoder
+	config.EncoderConfig = zapcore.EncoderConfig{
+		TimeKey:        "timestamp",
+		LevelKey:       "level",
+		NameKey:        "logger",
+		CallerKey:      "caller",
+		MessageKey:     "msg",
+		StacktraceKey:  "stacktrace",
+		EncodeLevel:    zapcore.CapitalLevelEncoder,
+		EncodeTime:     zapcore.ISO8601TimeEncoder,
+		EncodeCaller:   zapcore.ShortCallerEncoder,
+		EncodeDuration: zapcore.StringDurationEncoder,
+	}
 
 	var err error
-	log, err = config.Build(zap.AddCallerSkip(1)) // Skip 1 level to get correct caller info
+	log, err = config.Build(zap.AddCallerSkip(1))
 	if err != nil {
 		panic(err)
 	}

@@ -1,11 +1,15 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/maxzhirnov/formease/internal/models"
 	"github.com/maxzhirnov/formease/internal/service"
+	"github.com/maxzhirnov/formease/pkg/logger"
+	"go.uber.org/zap"
 )
 
 type AuthHandler struct {
@@ -46,28 +50,30 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		c.JSON(401, gin.H{"error": "Invalid credentials"})
 		return
 	}
+	logger.Info(fmt.Sprintf("accessToken: %s, refreshToken: %s", accessToken, refreshToken))
 
 	// Set access token cookie
 	c.SetSameSite(http.SameSiteStrictMode)
 	c.SetCookie(
 		"access_token",
 		accessToken,
-		3600, // 1 hour
+		8*3600, // 8 hours
 		"/",
-		"",   // domain
-		true, // secure
-		true, // httpOnly
+		"",
+		true,
+		true,
 	)
 
-	// Set refresh token cookie with specific path
+	// Set refresh token cookie
+	c.SetSameSite(http.SameSiteStrictMode)
 	c.SetCookie(
 		"refresh_token",
 		refreshToken,
-		7*24*3600,  // 7 days
-		"/refresh", // restrict to refresh endpoint
-		"",         // domain
-		true,       // secure
-		true,       // httpOnly
+		7*24*3600,
+		"/", // Changed from "/refresh" to "/"
+		"",
+		true,
+		true,
 	)
 
 	// Return only user info in response
@@ -80,46 +86,78 @@ func (h *AuthHandler) Login(c *gin.Context) {
 }
 
 func (h *AuthHandler) Refresh(c *gin.Context) {
-	// Get refresh token from cookie instead of request body
+	logger.Info("Refresh request received",
+		zap.String("path", c.Request.URL.Path),
+		zap.Any("headers", c.Request.Header),
+		zap.Any("cookies", c.Request.Cookies()))
+
+	// Try to get token from cookie first
 	refreshToken, err := c.Cookie("refresh_token")
 	if err != nil {
+		// If not in cookie, try to get from Cookie header
+		cookieHeader := c.GetHeader("Cookie")
+		if cookieHeader != "" {
+			cookies := strings.Split(cookieHeader, ";")
+			for _, cookie := range cookies {
+				parts := strings.Split(strings.TrimSpace(cookie), "=")
+				if len(parts) == 2 && parts[0] == "refresh_token" {
+					refreshToken = parts[1]
+					break
+				}
+			}
+		}
+	}
+
+	if refreshToken == "" {
+		logger.Error("No refresh token found in request")
 		c.JSON(401, gin.H{"error": "No refresh token provided"})
 		return
 	}
 
+	logger.Info("Found refresh token", zap.String("token", refreshToken))
+
+	// Rest of your refresh logic
 	accessToken, newRefreshToken, err := h.userService.RefreshToken(c.Request.Context(), refreshToken)
 	if err != nil {
-		// Clear cookies if refresh token is invalid
-		c.SetCookie("refresh_token", "", -1, "/refresh", "", true, true)
+		logger.Error("Error refreshing token", zap.Error(err))
+		c.SetCookie("refresh_token", "", -1, "/", "", true, true)
 		c.SetCookie("access_token", "", -1, "/", "", true, true)
 		c.JSON(401, gin.H{"error": "Invalid refresh token"})
 		return
 	}
 
-	// Set new access token cookie
+	logger.Info("Setting new cookies",
+		zap.String("accessToken", accessToken),
+		zap.String("refreshToken", newRefreshToken))
+
+	// Set access token cookie
 	c.SetSameSite(http.SameSiteStrictMode)
 	c.SetCookie(
 		"access_token",
 		accessToken,
-		3600, // 1 hour
+		8*3600, // 8 hours
 		"/",
-		"",   // domain
-		true, // secure
-		true, // httpOnly
+		"",
+		true,
+		true,
 	)
 
-	// Set new refresh token cookie
+	// Set refresh token cookie
+	c.SetSameSite(http.SameSiteStrictMode)
 	c.SetCookie(
 		"refresh_token",
 		newRefreshToken,
-		7*24*3600,  // 7 days
-		"/refresh", // restrict to refresh endpoint
-		"",         // domain
-		true,       // secure
-		true,       // httpOnly
+		7*24*3600,
+		"/",
+		"",
+		true,
+		true,
 	)
 
-	// Return success without tokens in body
+	// Add both tokens to response headers for debugging
+	c.Header("X-Debug-Access-Token", "set")
+	c.Header("X-Debug-Refresh-Token", "set")
+
 	c.JSON(200, gin.H{"status": "success"})
 }
 
